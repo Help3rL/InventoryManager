@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_inventory
+    environment:
+      POSTGRES_USER: invUser7bf942
+      POSTGRES_PASSWORD: f5G6ewgCcAQrdU8ZyKxJPLtB3NskuXThW 
+      POSTGRES_DB: inventoryManagement 
+      POSTGRES_ROOT_PASSWORD: rT5#kM9pL2nX4
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+    - "6500:5432"
+    volumes:
+    - postgres_inventory_data:/var/lib/postgresql/data
+    networks:
+    - inventory_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U inv_user_7bf942 -d inventoryManagement"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+volumes:
+  postgres_inventory_data:
+    name: postgres_inventory_data 
+
+networks:
+  inventory_network:
+    name: inventory_network
